@@ -4,7 +4,7 @@ from typing import Optional, List
 from app.domain.entities.topic import Topic
 
 
-class ITopicInterface(ABC):
+class ITopicRepository(ABC):
     @abstractmethod
     def create(self, topic: Topic) -> Topic:
         ...
