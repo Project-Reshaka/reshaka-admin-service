@@ -4,6 +4,8 @@ from sqlalchemy.orm import Session
 
 from app.domain.entities.subject import Subject
 from app.domain.interfaces import ISubjectRepository
+from app.infrastructure.database.models import Subject as SubjectModel
+from app.infrastructure.orm_entity_mapper import OrmEntityMapper
 
 
 class SubjectRepository(ISubjectRepository):
@@ -11,16 +13,31 @@ class SubjectRepository(ISubjectRepository):
         self.session = session
 
     def create(self, subject: Subject) -> Subject:
-        pass
+        model = OrmEntityMapper.to_model(subject, SubjectModel)
+        self.session.add(subject)
+        self.session.commit()
+        self.session.refresh(model)
+        return OrmEntityMapper.to_entity(model, SubjectModel)
 
     def get_by_id(self, subject_id: int) -> Optional[Subject]:
-        pass
+        model = self.session.query(SubjectModel).filter_by(id=subject_id).first()
+        return OrmEntityMapper.to_entity(model, Subject)
 
     def list(self) -> List[Subject]:
-        pass
+        models = self.session.query(SubjectModel).order_by(SubjectModel.id).all()
+        return [OrmEntityMapper.to_entity(model, Subject) for model in models]
 
     def update(self, subject_id: int, data: dict) -> Optional[Subject]:
-        pass
+        model = self.session.query(SubjectModel).filter_by(id=subject_id).first()
+        if not model:
+            return None
+        for key, value in data.items():
+            setattr(model, key, value)
+
+        self.session.commit()
+        self.session.refresh(model)
+        return OrmEntityMapper.to_entity(model, Subject)
 
     def delete(self, subject_id: int) -> None:
-        pass
+        self.session.query(SubjectModel).filter_by(id=subject_id).delete()
+        self.session.commit()
