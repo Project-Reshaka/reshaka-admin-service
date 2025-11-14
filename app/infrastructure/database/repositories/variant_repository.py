@@ -37,7 +37,7 @@ class VariantRepository(IVariantRepository):
 
     def create(self, variant: Variant) -> Variant:
         model = OrmEntityMapper.to_model(variant, VariantModel)
-        self.session.add(variant)
+        self.session.add(model)
         self.session.commit()
         self.session.refresh(model)
         return OrmEntityMapper.to_entity(model, Variant)

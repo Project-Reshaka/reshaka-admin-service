@@ -14,7 +14,7 @@ class SubjectRepository(ISubjectRepository):
 
     def create(self, subject: Subject) -> Subject:
         model = OrmEntityMapper.to_model(subject, SubjectModel)
-        self.session.add(subject)
+        self.session.add(model)
         self.session.commit()
         self.session.refresh(model)
         return OrmEntityMapper.to_entity(model, SubjectModel)

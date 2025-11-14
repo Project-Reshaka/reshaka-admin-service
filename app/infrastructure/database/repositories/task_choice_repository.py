@@ -14,7 +14,7 @@ class TaskChoiceRepository(ITaskChoiceRepository):
 
     def create(self, task: TaskChoice) -> TaskChoice:
         model = OrmEntityMapper.to_model(task, TaskChoiceModel)
-        self.session.add(task)
+        self.session.add(model)
         self.session.commit()
         self.session.refresh(model)
         return OrmEntityMapper.to_entity(model, TaskChoice)

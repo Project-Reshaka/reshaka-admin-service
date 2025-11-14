@@ -14,7 +14,7 @@ class TaskInputRepository(ITaskInputRepository):
 
     def create(self, task: TaskInput) -> TaskInput:
         model = OrmEntityMapper.to_model(task, TaskInputModel)
-        self.session.add(task)
+        self.session.add(model)
         self.session.commit()
         self.session.refresh(model)
         return OrmEntityMapper.to_entity(model, TaskInput)

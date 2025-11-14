@@ -14,7 +14,7 @@ class ResultVariantRepository(IResultVariantRepository):
 
     def create(self, result: ResultVariant) -> ResultVariant:
         model = OrmEntityMapper.to_model(result, ResultVariantModel)
-        self.session.add(result)
+        self.session.add(model)
         self.session.commit()
         self.session.refresh(model)
         return OrmEntityMapper.to_entity(model, ResultVariant)

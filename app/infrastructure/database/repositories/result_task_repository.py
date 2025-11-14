@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List
 
 from sqlalchemy.orm import Session
 
@@ -14,7 +14,7 @@ class ResultTaskRepository(IResultTaskRepository):
 
     def create(self, result: ResultTask) -> ResultTask:
         model = OrmEntityMapper.to_model(result, ResultTaskModel)
-        self.session.add(result)
+        self.session.add(model)
         self.session.commit()
         self.session.refresh(model)
         return OrmEntityMapper.to_entity(model, ResultTask)

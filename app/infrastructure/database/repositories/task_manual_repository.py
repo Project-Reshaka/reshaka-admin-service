@@ -14,7 +14,7 @@ class TaskManualRepository(ITaskManualRepository):
 
     def create(self, task: TaskManual) -> TaskManual:
         model = OrmEntityMapper.to_model(task, TaskManualModel)
-        self.session.add(task)
+        self.session.add(model)
         self.session.commit()
         self.session.refresh(model)
         return OrmEntityMapper.to_entity(model, TaskManual)

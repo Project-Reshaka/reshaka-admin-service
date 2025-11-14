@@ -14,7 +14,7 @@ class ResultVariantTaskRepository(IResultVariantTaskRepository):
 
     def create(self, result: ResultVariantTask) -> ResultVariantTask:
         model = OrmEntityMapper.to_model(result, ResultVariantTaskModel)
-        self.session.add(result)
+        self.session.add(model)
         self.session.commit()
         self.session.refresh(model)
         return OrmEntityMapper.to_entity(model, ResultVariantTask)
